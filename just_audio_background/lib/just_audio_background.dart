@@ -292,13 +292,6 @@ class _JustAudioPlayer extends AudioPlayerPlatform {
       _playerAudioHandler.customSetShuffleOrder(request);
 
   @override
-  Future<SetWebCrossOriginResponse> setWebCrossOrigin(
-      SetWebCrossOriginRequest request) async {
-    _playerAudioHandler.customSetWebCrossOrigin(request);
-    return SetWebCrossOriginResponse();
-  }
-
-  @override
   Future<SeekResponse> seek(SeekRequest request) =>
       _playerAudioHandler.customPlayerSeek(request);
 
@@ -512,11 +505,6 @@ class _PlayerAudioHandler extends BaseAudioHandler
     return await (await _player).setShuffleOrder(SetShuffleOrderRequest(
       audioSourceMessage: _source!,
     ));
-  }
-
-  Future<SetWebCrossOriginResponse> customSetWebCrossOrigin(
-      SetWebCrossOriginRequest request) async {
-    return await (await _player).setWebCrossOrigin(request);
   }
 
   Future<ConcatenatingInsertAllResponse> customConcatenatingInsertAll(

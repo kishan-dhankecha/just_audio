@@ -1257,29 +1257,6 @@ class AudioPlayer {
     (await _platform).stopVisualizer(StopVisualizerRequest());
   }
 
-  /// Set the `crossorigin` attribute on the `<audio>` element backing this
-  /// player instance on web (see
-  /// [HTMLMediaElement crossorigin](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/crossOrigin) ).
-  ///
-  /// If [webCrossOrigin] is null (the initial state), the URL will be fetched
-  /// without CORS. If it is `useCredentials`, a CORS request will be made
-  /// exchanging credentials (via cookies/certificates/HTTP authentication)
-  /// regardless of the origin. If it is 'anonymous', a CORS request will be
-  /// made, but credentials are exchanged only if the URL is fetched from the
-  /// same origin.
-  Future<void> setWebCrossOrigin(WebCrossOrigin? webCrossOrigin) async {
-    if (_disposed) return;
-    if (!kIsWeb && !_isUnitTest()) return;
-
-    await (await _platform).setWebCrossOrigin(
-      SetWebCrossOriginRequest(
-          crossOrigin: webCrossOrigin == null
-              ? null
-              : WebCrossOriginMessage.values[webCrossOrigin.index]),
-    );
-    _webCrossOrigin = webCrossOrigin;
-  }
-
   /// Release all resources associated with this player. You must invoke this
   /// after you are done with the player.
   Future<void> dispose() async {
@@ -1555,11 +1532,6 @@ class AudioPlayer {
                 ? ShuffleModeMessage.all
                 : ShuffleModeMessage.none));
         if (checkInterruption()) return platform;
-        if (kIsWeb && _webCrossOrigin != null) {
-          await platform.setWebCrossOrigin(SetWebCrossOriginRequest(
-            crossOrigin: WebCrossOriginMessage.values[_webCrossOrigin!.index],
-          ));
-        }
         for (var audioEffect in _audioPipeline._audioEffects) {
           await audioEffect._activate(platform);
           if (checkInterruption()) return platform;
@@ -3780,12 +3752,6 @@ class _IdleAudioPlayer extends AudioPlayerPlatform {
   Future<SetShuffleOrderResponse> setShuffleOrder(
       SetShuffleOrderRequest request) async {
     return SetShuffleOrderResponse();
-  }
-
-  @override
-  Future<SetWebCrossOriginResponse> setWebCrossOrigin(
-      SetWebCrossOriginRequest request) async {
-    return SetWebCrossOriginResponse();
   }
 
   @override

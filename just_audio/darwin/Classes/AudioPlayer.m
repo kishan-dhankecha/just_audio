@@ -1527,13 +1527,15 @@ static void finalizeTap(MTAudioProcessingTapRef tap) {
     }
 }
 
-- (void)dispose {
+- (void)dispose:(BOOL)calledFromDealloc {
     if (!_player) return;
     if (_processingState != none) {
         [_player pause];
 
         [self updatePosition];
-        [self broadcastPlaybackEvent];
+        if (!calledFromDealloc) {
+            [self broadcastPlaybackEvent];
+        }
         if (_playResult) {
             //NSLog(@"PLAY FINISHED DUE TO STOP");
             _playResult(@{});

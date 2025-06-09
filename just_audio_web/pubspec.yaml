@@ -3,6 +3,11 @@ description: Web platform implementation of just_audio. This implementation is e
 homepage: https://github.com/ryanheise/just_audio/tree/master/just_audio_web
 version: 0.4.16
 
+publish_to: 'none'
+
+environment:
+  sdk: ^3.8.1
+
 flutter:
   plugin:
     platforms:
@@ -11,19 +16,18 @@ flutter:
         fileName: just_audio_web.dart
 
 dependencies:
-  # just_audio_platform_interface: ^4.5.0
   just_audio_platform_interface:
-    path: ../just_audio_platform_interface
+    git:
+      url: https://github.com/kishan-dhankecha/just_audio.git
+      ref: visualizer
+      path: just_audio_platform_interface
   flutter:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  web: ^1.0.0
-  synchronized: ^3.2.0
+  web: ^1.1.1
+  synchronized: ^3.3.1
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^6.0.0
 
-environment:
-  sdk: ^3.2.1
-  flutter: '>=3.16.0'
